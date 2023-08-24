@@ -1,12 +1,10 @@
-package Controller;
+package com.springMongoDB.SpringBootMongoProject.Controller;
 
-import Model.Expense;
-import Service.ExpenseService;
+import com.springMongoDB.SpringBootMongoProject.Model.Expense;
+import com.springMongoDB.SpringBootMongoProject.Service.ExpenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/expense")
@@ -24,8 +22,10 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PutMapping
-    public void updateExpense(Expense expense)
+    public ResponseEntity<Expense> updateExpense(Expense expense)
     {
+        expenseService.updateExpense(expense);
+        return ResponseEntity.ok().build();
 
     }
     @GetMapping
@@ -33,16 +33,20 @@ public class ExpenseController {
     {
         ResponseEntity.ok(expenseService.getAllExpense());
     }
-
-    public void getExpenseByName()
+    @GetMapping("/{name}")
+    public ResponseEntity<Expense> getExpenseByName(@PathVariable String name)
     {
+        return ResponseEntity.ok(expenseService.getExpenseByName(name));
+
 
 
 
     }
-    @DeleteMapping
-    public void deleteExpense()
+    @DeleteMapping("/{Id}")
+    public ResponseEntity deleteExpense(@PathVariable String Id)
     {
+        expenseService.deleteExpense(Id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
